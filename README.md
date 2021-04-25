@@ -17,3 +17,11 @@ The slideshow should:
 ## Reference Image
 
 ![Screenshot](screenshot.png)
+
+## Installation instructions
+
+I built this project with `Parcel-bundler` because I still wanted a web app bundler but I was interested to test this alternative to Webpack for a long while.
+- `cd` into this directory
+- `yarn` or `npm install`
+- `yarn dev`
+- Point your browser to [the local server](localhost:1234)
