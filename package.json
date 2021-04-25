@@ -1,0 +1,9 @@
+{
+  "name": "slideshow",
+  "version": "1.0.0",
+  "description": "Guillaume Hammadi application for Retail Zipline Senior Frontend Developer",
+  "main": "index.js",
+  "author": "Guillaume Hammadi",
+  "license": "MIT",
+  "private": true
+}
