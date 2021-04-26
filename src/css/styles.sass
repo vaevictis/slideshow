@@ -16,7 +16,38 @@ img
   align-items: center
   justify-content: center
 
+
   .image-container
+    background-color: white
+    overflow: hidden
+    position: relative
     flex-shrink: 1
-    border: 10px solid white
+    padding: 15px
     object-fit: contain
+
+  .prev-btn, .next-btn
+    position: absolute
+    background: white
+    border-radius: 50%
+    width: 80px
+    height: 80px
+    top: calc(50% - 40px)
+
+  .prev-btn
+    left: 25px
+    margin-left: -55px
+    box-shadow: 3px 3px 5px 2px #666
+
+    svg
+      padding-left: 30px
+      padding-top: 20px
+
+
+  .next-btn
+    right: 25px
+    margin-right: -55px
+    box-shadow: -3px 3px 5px 2px #666
+
+    svg
+      padding-left: 8px
+      padding-top: 18px

@@ -12,7 +12,7 @@ export const init = () => {
 }
 
 const initializeSlideshow = () => {
-  slideshowContainer.querySelector('p').remove()
+  slideshowContainer.querySelector('.loading-msg').remove()
 
   image.src = imagePaths[currentImgIdx]
 
