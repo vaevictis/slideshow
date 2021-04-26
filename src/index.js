@@ -1,3 +1,3 @@
-import { initializeSlideshow } from './js/slideshow'
+import { init } from './js/slideshow'
 
-initializeSlideshow()
+init()
