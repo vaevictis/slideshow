@@ -1,8 +1,12 @@
 import imagesData from '../assets/**/*.jpg'
+// import imagesData from '../assets/**/*.png'
 
 const slideshowContainer = document.querySelector('.image-container')
-const imagePaths = Object.values(imagesData.images)
-const image = document.createElement('img')
+const imageDomElm = document.createElement('img')
+
+const imagePaths = imagesData?.images
+  ? Object.values(imagesData.images)
+  : []
 
 let currentImgIdx = 0
 
@@ -12,18 +16,27 @@ export const init = () => {
 }
 
 const initializeSlideshow = () => {
-  slideshowContainer.querySelector('.loading-msg').remove()
+  const loadingMsg = document.querySelector('.loading-msg')
+  if (imagePaths.length === 0) {
+    loadingMsg.innerText = 'no image to display'
+    return
+  } else {
+    loadingMsg.remove()
+    slideshowContainer.style.setProperty('display', 'block')
+  }
 
-  image.src = imagePaths[currentImgIdx]
+  imageDomElm.src = imagePaths.length > 0
+    ? imagePaths[currentImgIdx]
+    : ''
 
-  slideshowContainer.appendChild(image)
+  slideshowContainer.appendChild(imageDomElm)
 
   // setInterval(switchToNextImg, 2000)
 }
 
 const attachHandlersToButtons = () => {
-  const prevBtn = document.querySelector('.prev-btn')
-  const nextBtn = document.querySelector('.next-btn')
+  const prevBtn = slideshowContainer.querySelector('.prev-btn')
+  const nextBtn = slideshowContainer.querySelector('.next-btn')
 
   prevBtn.addEventListener('click', event => {
     switchToPrevImg()
@@ -45,6 +58,8 @@ const switchToPrevImg = () => {
 }
 
 const changeImg = () => {
-  image.src = imagePaths[currentImgIdx]
-  slideshowContainer.appendChild(image)
+  if (imagePaths.length > 0) {
+    imageDomElm.src = imagePaths[currentImgIdx]
+    slideshowContainer.appendChild(imageDomElm)
+  }
 }
