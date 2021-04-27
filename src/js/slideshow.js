@@ -3,6 +3,8 @@ import imagesData from '../assets/**/*.jpg'
 
 const slideshowContainer = document.querySelector('.image-container')
 const imageDomElm = document.createElement('img')
+imageDomElm.className = 'current-img'
+let intervalId
 
 const imagePaths = imagesData?.images
   ? Object.values(imagesData.images)
@@ -30,21 +32,36 @@ const initializeSlideshow = () => {
     : ''
 
   slideshowContainer.appendChild(imageDomElm)
-
-  // setInterval(switchToNextImg, 2000)
 }
 
 const attachHandlersToButtons = () => {
   const prevBtn = slideshowContainer.querySelector('.prev-btn')
   const nextBtn = slideshowContainer.querySelector('.next-btn')
+  const playBtn = document.querySelector('.icon-tabler-player-play')
+  const pauseBtn = document.querySelector('.icon-tabler-player-pause')
 
-  prevBtn.addEventListener('click', event => {
-    switchToPrevImg()
-  })
+  prevBtn.addEventListener('click', switchToPrevImg)
+  nextBtn.addEventListener('click', switchToNextImg)
 
-  nextBtn.addEventListener('click', event => {
-    switchToNextImg()
-  })
+  const onPlayClick = () => {
+    intervalId = setInterval(switchToNextImg, 2000)
+    console.log('automated slideshow started', intervalId)
+
+    playBtn.removeEventListener('click', onPlayClick)
+    pauseBtn.addEventListener('click', onPauseClick)
+  }
+
+  const onPauseClick = () => {
+    if (intervalId !== null) {
+      clearInterval(intervalId)
+      console.log(`automated slideshow with interval ID ${intervalId} stopped`)
+
+      pauseBtn.removeEventListener('click', onPauseClick)
+      playBtn.addEventListener('click', onPlayClick)
+    }
+  }
+
+  playBtn.addEventListener('click', onPlayClick)
 }
 
 const switchToNextImg = () => {

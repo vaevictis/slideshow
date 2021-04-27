@@ -2,16 +2,16 @@ body
   background-color: black
   font-family: "helvetica"
 
-p
+.loading-msg
   color: white
 
-img
-  max-height: 95vh
-  max-width: 95vw
+.current-img
+  max-height: 90vh
+  max-width: 90vw
 
 #slideshow
   box-sizing: border-box
-  height: 100vh
+  height: 95vh
   display: flex
   align-items: center
   justify-content: center
@@ -39,7 +39,7 @@ img
     margin-left: -55px
     box-shadow: 3px 3px 5px 2px #666
 
-    svg
+    .icon-tabler-chevron-left
       padding-left: 30px
       padding-top: 20px
 
@@ -49,6 +49,11 @@ img
     margin-right: -55px
     box-shadow: -3px 3px 5px 2px #666
 
-    svg
+    .icon-tabler-chevron-right
       padding-left: 8px
       padding-top: 18px
+
+#control
+  display: flex
+  justify-content: center
+  height: 5vh
