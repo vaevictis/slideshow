@@ -7,7 +7,12 @@ body
 
 .current-img
   max-height: 80vh
+  // Depending on design constraints, we could alter the display so the
+  // previous and next buttons are always in the same spot.
+  // reverse the commenting status of lines 13 to 15 to try that
   max-width: 85vw
+  // width: 85vw
+  // object-fit: contain
 
 #slideshow
   box-sizing: border-box
@@ -56,7 +61,20 @@ body
   display: flex
   justify-content: space-around
   align-items: center
-  max-height: 4vh
+  max-height: 5vh
+
+  #controls
+    flex-grow: 0
 
   .counter-string
     color: white
+
+    .counter
+      font-weight: bold
+
+@media only screen and (max-height: 420px)
+  #bottom-nav
+    margin-top: 5px
+    #controls .icon-tabler
+      max-height: 5vh
+      max-width: 5vh
