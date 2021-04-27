@@ -83,12 +83,12 @@ const attachHandlersToButtons = () => {
 }
 
 const switchToNextImg = () => {
-  currentImgIdx = currentImgIdx === 3 ? 0 : currentImgIdx + 1
+  currentImgIdx = currentImgIdx === imageKeysArray.length - 1 ? 0 : currentImgIdx + 1
   changeImg()
 }
 
 const switchToPrevImg = () => {
-  currentImgIdx = currentImgIdx === 0 ? 3 : currentImgIdx - 1
+  currentImgIdx = currentImgIdx === 0 ? imageKeysArray.length - 1 : currentImgIdx - 1
   changeImg()
 }
 
