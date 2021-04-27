@@ -4,7 +4,7 @@ import imagesData from '../assets/**/*.jpg'
 const slideshowContainer = document.querySelector('.image-container')
 const imageDomElm = document.createElement('img')
 imageDomElm.className = 'current-img'
-let intervalId
+let slideshowTimerId
 
 const imagePaths = imagesData?.images
   ? Object.values(imagesData.images)
@@ -41,8 +41,8 @@ const attachHandlersToButtons = () => {
   nextBtn.addEventListener('click', switchToNextImg)
 
   const onPlayClick = () => {
-    intervalId = setInterval(switchToNextImg, 2000)
-    console.log('automated slideshow started', intervalId)
+    slideshowTimerId = setInterval(switchToNextImg, 2000)
+    console.log('automated slideshow started', slideshowTimerId)
 
     playBtn.removeEventListener('click', onPlayClick)
     pauseBtn.addEventListener('click', onPauseClick)
@@ -52,9 +52,9 @@ const attachHandlersToButtons = () => {
   }
 
   const onPauseClick = () => {
-    if (intervalId !== null) {
-      clearInterval(intervalId)
-      console.log(`automated slideshow with interval ID ${intervalId} stopped`)
+    if (slideshowTimerId !== null) {
+      clearInterval(slideshowTimerId)
+      console.log(`automated slideshow with interval ID ${slideshowTimerId} stopped`)
 
       pauseBtn.removeEventListener('click', onPauseClick)
       playBtn.addEventListener('click', onPlayClick)
