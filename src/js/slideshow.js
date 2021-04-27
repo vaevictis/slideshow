@@ -68,7 +68,7 @@ export const attachHandlersToButtons = () => {
 
 const switchToNextImg = () => {
   state.currentImgIdx = state.currentImgIdx === state.imageKeys.length - 1 ? 0 : state.currentImgIdx + 1
-  changeImg()
+  changeImg(state)
 }
 
 const switchToPrevImg = () => {
@@ -76,16 +76,20 @@ const switchToPrevImg = () => {
   changeImg()
 }
 
+// These two functions do not modify the state object, and only modify the interface.
+// They are still coupled to the DOM access though.
 const changeImg = () => {
-  if (state.imageKeys.length > 0) {
-    imgDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
-    state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
-    imgContainer.appendChild(imgDomElm)
-    updateViewCounter()
-  }
+  const { images, imageKeys, currentImgIdx } = state
+  const currentImgKey = imageKeys[currentImgIdx]
+
+  imgDomElm.src = images[currentImgKey].path
+  images[currentImgKey].viewCounter++
+  imgContainer.appendChild(imgDomElm)
+  updateViewCounter()
 }
 
 const updateViewCounter = () => {
+  const { images, imageKeys, currentImgIdx } = state
   const counter = bottomNav.querySelector('.counter')
-  counter.innerText = state.images[state.imageKeys[state.currentImgIdx]].viewCounter
+  counter.innerText = images[imageKeys[currentImgIdx]].viewCounter
 }
