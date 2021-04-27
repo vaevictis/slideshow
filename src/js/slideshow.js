@@ -27,10 +27,7 @@ const initializeSlideshow = () => {
     slideshowContainer.style.setProperty('display', 'block')
   }
 
-  imageDomElm.src = imagePaths.length > 0
-    ? imagePaths[currentImgIdx]
-    : ''
-
+  imageDomElm.src = imagePaths[currentImgIdx]
   slideshowContainer.appendChild(imageDomElm)
 }
 
@@ -49,6 +46,9 @@ const attachHandlersToButtons = () => {
 
     playBtn.removeEventListener('click', onPlayClick)
     pauseBtn.addEventListener('click', onPauseClick)
+
+    playBtn.setAttribute('stroke', '#666')
+    pauseBtn.setAttribute('stroke', '#fff')
   }
 
   const onPauseClick = () => {
@@ -58,6 +58,9 @@ const attachHandlersToButtons = () => {
 
       pauseBtn.removeEventListener('click', onPauseClick)
       playBtn.addEventListener('click', onPlayClick)
+
+      playBtn.setAttribute('stroke', '#fff')
+      pauseBtn.setAttribute('stroke', '#666')
     }
   }
 
