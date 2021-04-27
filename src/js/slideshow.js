@@ -24,12 +24,7 @@ if (imagesData?.images) {
 
 let currentImgIdx = 0
 
-export const init = () => {
-  initializeSlideshow()
-  attachHandlersToButtons()
-}
-
-const initializeSlideshow = () => {
+export const initializeSlideshow = () => {
   const loadingMsg = document.querySelector('.loading-msg')
   if (imageKeysArray.length === 0) {
     loadingMsg.innerText = 'no image to display'
@@ -46,7 +41,7 @@ const initializeSlideshow = () => {
   slideshowContainer.appendChild(imageDomElm)
 }
 
-const attachHandlersToButtons = () => {
+export const attachHandlersToButtons = () => {
   const prevBtn = slideshowContainer.querySelector('.prev-btn')
   const nextBtn = slideshowContainer.querySelector('.next-btn')
   const playBtn = document.querySelector('.icon-tabler-player-play')
