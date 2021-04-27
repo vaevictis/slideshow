@@ -4,11 +4,23 @@ import imagesData from '../assets/**/*.jpg'
 const slideshowContainer = document.querySelector('.image-container')
 const imageDomElm = document.createElement('img')
 imageDomElm.className = 'current-img'
-let slideshowTimerId
 
-const imagePaths = imagesData?.images
-  ? Object.values(imagesData.images)
-  : []
+let slideshowTimerId
+const imagesDataWithCounter = {}
+let imageKeysArray
+
+if (imagesData?.images) {
+  imageKeysArray = Object.keys(imagesData.images)
+
+  for (const [key, value] of Object.entries(imagesData.images)) {
+    imagesDataWithCounter[key] = {
+      path: value,
+      viewCounter: 0
+    }
+  }
+} else {
+  imageKeysArray = []
+}
 
 let currentImgIdx = 0
 
@@ -19,7 +31,7 @@ export const init = () => {
 
 const initializeSlideshow = () => {
   const loadingMsg = document.querySelector('.loading-msg')
-  if (imagePaths.length === 0) {
+  if (imageKeysArray.length === 0) {
     loadingMsg.innerText = 'no image to display'
     return
   } else {
@@ -27,7 +39,10 @@ const initializeSlideshow = () => {
     slideshowContainer.style.setProperty('display', 'block')
   }
 
-  imageDomElm.src = imagePaths[currentImgIdx]
+  imageDomElm.src = imagesDataWithCounter[imageKeysArray[currentImgIdx]].path
+  imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter++
+  updateViewCounter()
+
   slideshowContainer.appendChild(imageDomElm)
 }
 
@@ -78,8 +93,15 @@ const switchToPrevImg = () => {
 }
 
 const changeImg = () => {
-  if (imagePaths.length > 0) {
-    imageDomElm.src = imagePaths[currentImgIdx]
+  if (imageKeysArray.length > 0) {
+    imageDomElm.src = imagesDataWithCounter[imageKeysArray[currentImgIdx]].path
+    imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter++
     slideshowContainer.appendChild(imageDomElm)
+    updateViewCounter()
   }
+}
+
+const updateViewCounter = () => {
+  const counter = document.querySelector('.counter')
+  counter.innerText = imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter
 }
