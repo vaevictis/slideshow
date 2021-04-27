@@ -1,32 +1,19 @@
-import imagesData from '../assets/**/*.jpg'
-// import imagesData from '../assets/**/*.png'
+import initialState from './initialState'
 
-const slideshowContainer = document.querySelector('.image-container')
+const slideshowContainer = document.querySelector('.img-container')
 const imageDomElm = document.createElement('img')
-imageDomElm.className = 'current-img'
 
-let slideshowTimerId
-const imagesDataWithCounter = {}
-let imageKeysArray
-
-if (imagesData?.images) {
-  imageKeysArray = Object.keys(imagesData.images)
-
-  for (const [key, value] of Object.entries(imagesData.images)) {
-    imagesDataWithCounter[key] = {
-      path: value,
-      viewCounter: 0
-    }
-  }
-} else {
-  imageKeysArray = []
+const state = {
+  slideshowTimerId: 0,
+  currentImgIdx: 0,
+  ...initialState
 }
 
-let currentImgIdx = 0
-
 export const initializeSlideshow = () => {
+  imageDomElm.className = 'current-img'
+
   const loadingMsg = document.querySelector('.loading-msg')
-  if (imageKeysArray.length === 0) {
+  if (state.imageKeys.length === 0) {
     loadingMsg.innerText = 'no image to display'
     return
   } else {
@@ -34,16 +21,16 @@ export const initializeSlideshow = () => {
     slideshowContainer.style.setProperty('display', 'block')
   }
 
-  imageDomElm.src = imagesDataWithCounter[imageKeysArray[currentImgIdx]].path
-  imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter++
+  imageDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
+  state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
   updateViewCounter()
 
   slideshowContainer.appendChild(imageDomElm)
 }
 
 export const attachHandlersToButtons = () => {
-  const prevBtn = slideshowContainer.querySelector('.prev-btn')
-  const nextBtn = slideshowContainer.querySelector('.next-btn')
+  const prevBtn = document.querySelector('.prev-btn')
+  const nextBtn = document.querySelector('.next-btn')
   const playBtn = document.querySelector('.icon-tabler-player-play')
   const pauseBtn = document.querySelector('.icon-tabler-player-pause')
 
@@ -51,8 +38,8 @@ export const attachHandlersToButtons = () => {
   nextBtn.addEventListener('click', switchToNextImg)
 
   const onPlayClick = () => {
-    slideshowTimerId = setInterval(switchToNextImg, 2000)
-    console.log('automated slideshow started', slideshowTimerId)
+    state.slideshowTimerId = setInterval(switchToNextImg, 2000)
+    console.log('automated slideshow started', state.slideshowTimerId)
 
     playBtn.removeEventListener('click', onPlayClick)
     pauseBtn.addEventListener('click', onPauseClick)
@@ -62,9 +49,9 @@ export const attachHandlersToButtons = () => {
   }
 
   const onPauseClick = () => {
-    if (slideshowTimerId !== null) {
-      clearInterval(slideshowTimerId)
-      console.log(`automated slideshow with interval ID ${slideshowTimerId} stopped`)
+    if (state.slideshowTimerId !== null) {
+      clearInterval(state.slideshowTimerId)
+      console.log(`automated slideshow with interval ID ${state.slideshowTimerId} stopped`)
 
       pauseBtn.removeEventListener('click', onPauseClick)
       playBtn.addEventListener('click', onPlayClick)
@@ -78,19 +65,19 @@ export const attachHandlersToButtons = () => {
 }
 
 const switchToNextImg = () => {
-  currentImgIdx = currentImgIdx === imageKeysArray.length - 1 ? 0 : currentImgIdx + 1
+  state.currentImgIdx = state.currentImgIdx === state.imageKeys.length - 1 ? 0 : state.currentImgIdx + 1
   changeImg()
 }
 
 const switchToPrevImg = () => {
-  currentImgIdx = currentImgIdx === 0 ? imageKeysArray.length - 1 : currentImgIdx - 1
+  state.currentImgIdx = state.currentImgIdx === 0 ? state.imageKeys.length - 1 : state.currentImgIdx - 1
   changeImg()
 }
 
 const changeImg = () => {
-  if (imageKeysArray.length > 0) {
-    imageDomElm.src = imagesDataWithCounter[imageKeysArray[currentImgIdx]].path
-    imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter++
+  if (state.imageKeys.length > 0) {
+    imageDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
+    state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
     slideshowContainer.appendChild(imageDomElm)
     updateViewCounter()
   }
@@ -98,5 +85,5 @@ const changeImg = () => {
 
 const updateViewCounter = () => {
   const counter = document.querySelector('.counter')
-  counter.innerText = imagesDataWithCounter[imageKeysArray[currentImgIdx]].viewCounter
+  counter.innerText = state.images[state.imageKeys[state.currentImgIdx]].viewCounter
 }

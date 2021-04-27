@@ -1,6 +1,6 @@
 import { initializeSlideshow, attachHandlersToButtons } from './js/slideshow'
 
-export const init = () => {
+const init = () => {
   initializeSlideshow()
   attachHandlersToButtons()
 }
