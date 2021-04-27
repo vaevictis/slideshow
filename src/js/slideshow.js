@@ -1,9 +1,10 @@
 import initialState from './initialState'
 
 const slideshow = document.querySelector('#slideshow')
-const imgContainer = slideshow.querySelector('.img-container')
 const bottomNav = document.querySelector('#bottom-nav')
 const imgDomElm = document.createElement('img')
+const imgContainer = slideshow.querySelector('.img-container')
+const domCounter = bottomNav.querySelector('.counter')
 
 const state = {
   slideshowTimerId: 0,
@@ -23,11 +24,13 @@ export const initializeSlideshow = () => {
     imgContainer.style.setProperty('display', 'block')
   }
 
-  imgDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
-  state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
-  updateViewCounter()
+  const imgKey = state.imageKeys[state.currentImgIdx]
+  const imgPath = state.images[imgKey].path
 
-  imgContainer.appendChild(imgDomElm)
+  imgDomElm.src = imgPath
+  state.images[imgKey].viewCounter++
+  updateViewCounter(state.images[imgKey].viewCounter)
+  changeImg(imgPath)
 }
 
 export const attachHandlersToButtons = () => {
@@ -68,28 +71,33 @@ export const attachHandlersToButtons = () => {
 
 const switchToNextImg = () => {
   state.currentImgIdx = state.currentImgIdx === state.imageKeys.length - 1 ? 0 : state.currentImgIdx + 1
-  changeImg(state)
+
+  const imgKey = state.imageKeys[state.currentImgIdx]
+  const imgPath = state.images[imgKey].path
+
+  state.images[imgKey].viewCounter++
+  updateViewCounter(state.images[imgKey].viewCounter)
+  changeImg(imgPath)
 }
 
 const switchToPrevImg = () => {
   state.currentImgIdx = state.currentImgIdx === 0 ? state.imageKeys.length - 1 : state.currentImgIdx - 1
-  changeImg()
+
+  const imgKey = state.imageKeys[state.currentImgIdx]
+  const imgPath = state.images[imgKey].path
+
+  state.images[imgKey].viewCounter++
+  updateViewCounter(state.images[imgKey].viewCounter)
+  changeImg(imgPath)
 }
 
-// These two functions do not modify the state object, and only modify the interface.
+// These functions do not modify the state object, and only modify the interface.
 // They are still coupled to the DOM access though.
-const changeImg = () => {
-  const { images, imageKeys, currentImgIdx } = state
-  const currentImgKey = imageKeys[currentImgIdx]
-
-  imgDomElm.src = images[currentImgKey].path
-  images[currentImgKey].viewCounter++
+const changeImg = (imgPath) => {
+  imgDomElm.src = imgPath
   imgContainer.appendChild(imgDomElm)
-  updateViewCounter()
 }
 
-const updateViewCounter = () => {
-  const { images, imageKeys, currentImgIdx } = state
-  const counter = bottomNav.querySelector('.counter')
-  counter.innerText = images[imageKeys[currentImgIdx]].viewCounter
+const updateViewCounter = (counterValue) => {
+  domCounter.innerText = counterValue
 }
