@@ -1,7 +1,9 @@
 import initialState from './initialState'
 
-const slideshowContainer = document.querySelector('.img-container')
-const imageDomElm = document.createElement('img')
+const slideshow = document.querySelector('#slideshow')
+const imgContainer = slideshow.querySelector('.img-container')
+const bottomNav = document.querySelector('#bottom-nav')
+const imgDomElm = document.createElement('img')
 
 const state = {
   slideshowTimerId: 0,
@@ -10,29 +12,29 @@ const state = {
 }
 
 export const initializeSlideshow = () => {
-  imageDomElm.className = 'current-img'
+  imgDomElm.className = 'current-img'
+  const loadingMsg = slideshow.querySelector('.loading-msg')
 
-  const loadingMsg = document.querySelector('.loading-msg')
   if (state.imageKeys.length === 0) {
     loadingMsg.innerText = 'no image to display'
     return
   } else {
     loadingMsg.remove()
-    slideshowContainer.style.setProperty('display', 'block')
+    imgContainer.style.setProperty('display', 'block')
   }
 
-  imageDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
+  imgDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
   state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
   updateViewCounter()
 
-  slideshowContainer.appendChild(imageDomElm)
+  imgContainer.appendChild(imgDomElm)
 }
 
 export const attachHandlersToButtons = () => {
-  const prevBtn = document.querySelector('.prev-btn')
-  const nextBtn = document.querySelector('.next-btn')
-  const playBtn = document.querySelector('.icon-tabler-player-play')
-  const pauseBtn = document.querySelector('.icon-tabler-player-pause')
+  const prevBtn = slideshow.querySelector('.prev-btn')
+  const nextBtn = slideshow.querySelector('.next-btn')
+  const playBtn = bottomNav.querySelector('.icon-tabler-player-play')
+  const pauseBtn = bottomNav.querySelector('.icon-tabler-player-pause')
 
   prevBtn.addEventListener('click', switchToPrevImg)
   nextBtn.addEventListener('click', switchToNextImg)
@@ -76,14 +78,14 @@ const switchToPrevImg = () => {
 
 const changeImg = () => {
   if (state.imageKeys.length > 0) {
-    imageDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
+    imgDomElm.src = state.images[state.imageKeys[state.currentImgIdx]].path
     state.images[state.imageKeys[state.currentImgIdx]].viewCounter++
-    slideshowContainer.appendChild(imageDomElm)
+    imgContainer.appendChild(imgDomElm)
     updateViewCounter()
   }
 }
 
 const updateViewCounter = () => {
-  const counter = document.querySelector('.counter')
+  const counter = bottomNav.querySelector('.counter')
   counter.innerText = state.images[state.imageKeys[state.currentImgIdx]].viewCounter
 }
