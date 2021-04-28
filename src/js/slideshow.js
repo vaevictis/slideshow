@@ -1,4 +1,7 @@
+// Following line is a test to check what happens when no images are found
+// import imagesFolder from '../assets/**/*.png'
 import imagesFolder from '../assets/**/*.jpg'
+
 import Store from './Store'
 
 const slideshow = document.querySelector('#slideshow')
