@@ -1,4 +1,5 @@
-import initialState from './initialState'
+import imagesFolder from '../assets/**/*.jpg'
+import Store from './Store'
 
 const slideshow = document.querySelector('#slideshow')
 const bottomNav = document.querySelector('#bottom-nav')
@@ -6,17 +7,13 @@ const imgDomElm = document.createElement('img')
 const imgContainer = slideshow.querySelector('.img-container')
 const domCounter = bottomNav.querySelector('.counter')
 
-const state = {
-  slideshowTimerId: 0,
-  currentImgIdx: 0,
-  ...initialState
-}
+const store = new Store(imagesFolder)
 
 export const initializeSlideshow = () => {
   imgDomElm.className = 'current-img'
   const loadingMsg = slideshow.querySelector('.loading-msg')
 
-  if (state.imageKeys.length === 0) {
+  if (store.imageKeys.length === 0) {
     loadingMsg.innerText = 'no image to display'
     return
   } else {
@@ -24,13 +21,9 @@ export const initializeSlideshow = () => {
     imgContainer.style.setProperty('display', 'block')
   }
 
-  const imgKey = state.imageKeys[state.currentImgIdx]
-  const imgPath = state.images[imgKey].path
-
-  imgDomElm.src = imgPath
-  state.images[imgKey].viewCounter++
-  updateViewCounter(state.images[imgKey].viewCounter)
-  changeImg(imgPath)
+  store.increaseViewCounterForCurrentImg()
+  updateDomViewCounter(store.getCurrentImgViewCounter())
+  updateDomImg(store.getCurrentImgPath())
 }
 
 export const attachHandlersToButtons = () => {
@@ -43,8 +36,8 @@ export const attachHandlersToButtons = () => {
   nextBtn.addEventListener('click', switchToNextImg)
 
   const onPlayClick = () => {
-    state.slideshowTimerId = setInterval(switchToNextImg, 2000)
-    console.log('automated slideshow started', state.slideshowTimerId)
+    store.setSlideshowTimerId(setInterval(switchToNextImg, 2000))
+    console.log('automated slideshow started', store.getSlideshowTimerId())
 
     playBtn.removeEventListener('click', onPlayClick)
     pauseBtn.addEventListener('click', onPauseClick)
@@ -54,9 +47,9 @@ export const attachHandlersToButtons = () => {
   }
 
   const onPauseClick = () => {
-    if (state.slideshowTimerId !== null) {
-      clearInterval(state.slideshowTimerId)
-      console.log(`automated slideshow with interval ID ${state.slideshowTimerId} stopped`)
+    if (store.getSlideshowTimerId() !== null) {
+      clearInterval(store.getSlideshowTimerId())
+      console.log(`automated slideshow with interval ID ${store.getSlideshowTimerId()} stopped`)
 
       pauseBtn.removeEventListener('click', onPauseClick)
       playBtn.addEventListener('click', onPlayClick)
@@ -70,34 +63,22 @@ export const attachHandlersToButtons = () => {
 }
 
 const switchToNextImg = () => {
-  state.currentImgIdx = state.currentImgIdx === state.imageKeys.length - 1 ? 0 : state.currentImgIdx + 1
-
-  const imgKey = state.imageKeys[state.currentImgIdx]
-  const imgPath = state.images[imgKey].path
-
-  state.images[imgKey].viewCounter++
-  updateViewCounter(state.images[imgKey].viewCounter)
-  changeImg(imgPath)
+  store.incrementCurrentImg()
+  updateDomViewCounter(store.getCurrentImgViewCounter())
+  updateDomImg(store.getCurrentImgPath())
 }
 
 const switchToPrevImg = () => {
-  state.currentImgIdx = state.currentImgIdx === 0 ? state.imageKeys.length - 1 : state.currentImgIdx - 1
-
-  const imgKey = state.imageKeys[state.currentImgIdx]
-  const imgPath = state.images[imgKey].path
-
-  state.images[imgKey].viewCounter++
-  updateViewCounter(state.images[imgKey].viewCounter)
-  changeImg(imgPath)
+  store.decrementCurrentImg()
+  updateDomViewCounter(store.getCurrentImgViewCounter())
+  updateDomImg(store.getCurrentImgPath())
 }
 
-// These functions do not modify the state object, and only modify the interface.
-// They are still coupled to the DOM access though.
-const changeImg = (imgPath) => {
+const updateDomImg = (imgPath) => {
   imgDomElm.src = imgPath
   imgContainer.appendChild(imgDomElm)
 }
 
-const updateViewCounter = (counterValue) => {
+const updateDomViewCounter = (counterValue) => {
   domCounter.innerText = counterValue
 }
