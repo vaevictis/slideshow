@@ -28,10 +28,6 @@ export default class Store {
     this.currentImgIdx = 0
   }
 
-  increaseViewCounterForImgKey (imgKey) {
-    this.images[imgKey].viewCounter++
-  }
-
   increaseViewCounterForCurrentImg () {
     this.images[this.imageKeys[this.currentImgIdx]].viewCounter++
   }
@@ -56,7 +52,7 @@ export default class Store {
     return this.slideshowTimerId
   }
 
-  incrementCurrentImg () {
+  shiftToNextImg () {
     if (this.currentImgIdx === this.imageKeys.length - 1) {
       this.currentImgIdx = 0
     } else {
@@ -66,7 +62,7 @@ export default class Store {
     this.currentImg().viewCounter++
   }
 
-  decrementCurrentImg () {
+  shiftToPreviousImg () {
     if (this.currentImgIdx === 0) {
       this.currentImgIdx = this.imageKeys.length - 1
     } else {

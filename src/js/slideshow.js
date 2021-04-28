@@ -63,13 +63,13 @@ export const attachHandlersToButtons = () => {
 }
 
 const switchToNextImg = () => {
-  store.incrementCurrentImg()
+  store.shiftToNextImg()
   updateDomViewCounter(store.getCurrentImgViewCounter())
   updateDomImg(store.getCurrentImgPath())
 }
 
 const switchToPrevImg = () => {
-  store.decrementCurrentImg()
+  store.shiftToPreviousImg()
   updateDomViewCounter(store.getCurrentImgViewCounter())
   updateDomImg(store.getCurrentImgPath())
 }
