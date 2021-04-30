@@ -26,7 +26,7 @@ I built this project with `Parcel-bundler` because I still wanted a web app bund
 - `cd` into this directory
 - `yarn` or `npm install`
 - `yarn dev`
-- Point your browser to [the local server](localhost:1234)
+- Point your browser to [the local server](http://localhost:1234)
 
 ### Test suite
 I've included a small test suite. Simply run `yarn test` or `yarn test:watch`
